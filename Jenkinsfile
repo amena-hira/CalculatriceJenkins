@@ -18,15 +18,15 @@ pipeline {
             steps {
                 // Construire l'image
                 bat """
-                  docker build -t ${IMAGE_NAME}:latest .
+                docker build -t %IMAGE_NAME%:latest .
                 """
 
                 // Lancer le container → il démarre http-server + exécute test_calculatrice.js
                 bat """
-                  docker run --rm --shm-size=2g \
-                    -e MODE=test -e PORT=${PORT} \
-                    -p ${PORT}:${PORT} \
-                    ${IMAGE_NAME}:latest
+                docker run --rm --shm-size=2g ^
+                    -e MODE=test -e PORT=%PORT% ^
+                    -p %PORT%:%PORT% ^
+                    %IMAGE_NAME%:latest
                 """
             }
         }
@@ -37,14 +37,14 @@ pipeline {
                 input message: 'Déployer en production ?', ok: 'Oui'
 
                 // Supprimer un ancien container prod s’il existe
-                bat "docker rm -f ${IMAGE_NAME}-prod || true"
+                bat "docker rm -f %IMAGE_NAME%-prod || echo ok"
 
                 // Lancer l’appli en prod (pas les tests, juste le serveur statique)
                 bat """
-                  docker run -d --name ${IMAGE_NAME}-prod --shm-size=2g \
-                    -e MODE=serve -e PORT=${PORT} \
-                    -p ${PORT}:${PORT} \
-                    ${IMAGE_NAME}:latest
+                docker run -d --name %IMAGE_NAME%-prod --shm-size=2g ^
+                    -e MODE=serve -e PORT=%PORT% ^
+                    -p %PORT%:%PORT% ^
+                    %IMAGE_NAME%:latest
                 """
             }
         }
