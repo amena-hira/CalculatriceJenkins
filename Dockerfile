@@ -16,7 +16,14 @@ COPY . .
 RUN npm install -g selenium-webdriver http-server
 
 # Exposer le port 
-EXPOSE 8080
+ENV PORT=8081
+EXPOSE 8081
+
+# Simple entrypoint that starts Selenium + web + (optionally) runs tests
+COPY entrypoint.sh /usr/local/bin/run-all.sh
+RUN chmod +x /usr/local/bin/run-all.sh
 
 # Démarrer le serveur statique + attendre + lancer les tests
-CMD ["http-server", ".", "-p", "8081"]
+ENV MODE = tests
+ENTRYPOINT ["/usr/local/bin/run-all.sh"]
+# CMD ["http-server", ".", "-p", "8081"]
