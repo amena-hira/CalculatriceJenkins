@@ -18,7 +18,7 @@ pipeline {
 
                 // Lancer le container → il démarre http-server + exécute test_calculatrice.js
                 bat """
-                docker run --rm -p 8080:8080 calculatrice:${BUILD_NUMBER}
+                docker run --rm -p 8081:8080 calculatrice:${BUILD_NUMBER}
                 """
             }
         }
