@@ -9,7 +9,7 @@ const { Builder, By, Key } = require("selenium-webdriver");
 
   try {
     // Accéder au site
-    const port = process.env.PORT || 8081;
+    const port = 8081;
     const baseUrl = `http://localhost:${port}/index.html`; // adjust if your entry file is different
     await driver.get(baseUrl);
 

@@ -16,7 +16,6 @@ COPY . .
 RUN npm install -g selenium-webdriver http-server
 
 # Exposer le port 
-ENV PORT=8081
 EXPOSE 8081
 
 # Simple entrypoint that starts Selenium + web + (optionally) runs tests
