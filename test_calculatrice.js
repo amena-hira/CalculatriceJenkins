@@ -1,17 +1,20 @@
 const { Builder, By, Key } = require("selenium-webdriver");
+const chrome = require("selenium-webdriver/chrome");
 
 (async function testCalculatrice() {
+  const options = new chrome.Options()
+    .addArguments("--headless")
+    .addArguments("--no-sandbox")
+    .addArguments("--disable-dev-shm-usage");
   // Initialiser le driver avec les bonnes options
   const driver = await new Builder()
-    .usingServer("http://localhost:4444/wd/hub")
     .forBrowser("chrome")
+    .setChromeOptions(options)
     .build();
 
   try {
     // Accéder au site
-    const port = 8081;
-    const baseUrl = `http://localhost:${port}/index.html`; // adjust if your entry file is different
-    await driver.get(baseUrl);
+    await driver.get("http://localhost:8080/index.html");
 
     async function selectOp(operator) {
       await driver.findElement(By.css("#operation")).click(); // open dropdown
