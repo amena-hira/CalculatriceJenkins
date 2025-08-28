@@ -33,7 +33,7 @@ pipeline {
 
                 // Lancer l’appli en prod (pas les tests, juste le serveur statique)
                 bat """
-                docker run -d --name calculatrice-prod -p 8081:8080 calculatrice:latest npx http-server
+                docker run -d --name calculatrice-prod -p 8081:8080 calculatrice:${env.BUILD_ID} npx http-server
                 """
             }
         }
