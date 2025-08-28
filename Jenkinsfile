@@ -13,12 +13,12 @@ pipeline {
             steps {
                 // Construire l'image
                 bat """
-                docker build --no-cache -t calculatrice:${BUILD_NUMBER} .
+                docker build --no-cache -t calculatrice:${env.BUILD_ID} .
                 """
 
                 // Lancer le container → il démarre http-server + exécute test_calculatrice.js
                 bat """
-                docker run --rm -p 8081:8080 calculatrice:${BUILD_NUMBER}
+                docker run --rm calculatrice:${env.BUILD_ID}
                 """
             }
         }
@@ -26,10 +26,10 @@ pipeline {
         stage('Déployer en production') {
             steps {
                 // Poser la question : Voulez-vous déployer ? Oui/Non
-                input message: 'Déployer en production ?', ok: 'Oui'
+                input message: 'Déployer en production ?', ok: 'Deployer'
 
                 // Supprimer un ancien container prod s’il existe
-                bat "docker rm -f calculatrice-prod || echo ok"
+                bat "docker rm -f calculatrice-prod || true"
 
                 // Lancer l’appli en prod (pas les tests, juste le serveur statique)
                 bat """
